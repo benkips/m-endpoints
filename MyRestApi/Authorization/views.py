@@ -1,8 +1,5 @@
-
-
-
 try:
-    from flask import Flask, Request, request,app
+    from flask import Flask, Request, request, app, jsonify
     from flask_restful import Resource, Api, reqparse
     from apispec import APISpec
     from marshmallow import Schema, fields
@@ -45,13 +42,13 @@ class AuthorizationController(MethodResource, Resource):
                     token = jwt.encode(
                         {
                             'user': username,
-                            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1),
+                            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30),
                         }
                         , SECRET_KEY)
 
-                    return json.dumps({
+                    return jsonify({
                         'token': token.decode('UTF-8')
-                    }, indent=3)
+                    })
 
         except Exception as e:
             print(e)

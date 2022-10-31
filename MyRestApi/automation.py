@@ -13,24 +13,19 @@ class Parameters(object):
     def __init__(self):
         self.data = {
 
-            "ApiName": "Authorization",
-            "tag": "Authorization",
-            "ApiDescription": "Basic auth",
+            "ApiName": "Transactions",
+            "tag": "Get mpesa transactions",
+            "ApiDescription": "Mpesa transactions",
             "DataBaseRequired": False,
             "python_library": ["import os", "from enum import Enum", ],
             "field": [
                 {
-                    "name": "Username",
+                    "name": "phone",
                     "type": "String",
                     "required": True,
-                    "description": "Username to authorize",
+                    "description": "mobile number",
                 },
-                {
-                    "name": "Password",
-                    "type": "String",
-                    "required": True,
-                    "description": "Password to authorize",
-                }
+
             ],
 
         }
