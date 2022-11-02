@@ -13,7 +13,7 @@ class Parameters(object):
     def __init__(self):
         self.data = {
 
-            "ApiName": "Transactions",
+            "ApiName": "StkPush",
             "tag": "Get mpesa transactions",
             "ApiDescription": "Mpesa transactions",
             "DataBaseRequired": False,

@@ -13,7 +13,7 @@ try:
 
     from MyRestApi.ClusterHealth.views import HeathController
     from MyRestApi.Authorization.views import AuthorizationController
-    from MyRestApi.Transactions.views import TransactionsController
+    from MyRestApi.StkPush.views import TransactionstkController
 
 except Exception as e:
     print("__init Modules are Missing {}".format(e))
@@ -48,8 +48,8 @@ api.add_resource(HeathController, '/health_check')
 docs.register(HeathController)
 api.add_resource(AuthorizationController, '/Authorize')
 docs.register(AuthorizationController)
-api.add_resource(TransactionsController, '/stk')
-docs.register(TransactionsController)
+api.add_resource(TransactionstkController, '/stk')
+docs.register(TransactionstkController)
 
 if __name__ == "__main__":
     app.run()
