@@ -23,13 +23,13 @@ SECRET_KEY = '8ee2923d3cd2b2833d3b747173f6c0da'
 class TransactionstkPutSchema(Schema):
     phone = fields.String(required=True, description="mobile number")
     amount = fields.String(required=True, description="amount")
+    orderno = fields.String(required=True, description="ordernumber")
 
 
 def verify_token(f):
     @wraps(f)
     def decorator(*args, **kwargs):
         token = request.headers.get('token', None)
-        print(token)
         if token is None:
             return {"Message": "Your are missing Token"}
         else:
@@ -48,23 +48,27 @@ def verify_token(f):
 class TransactionstkController(MethodResource, Resource):
 
     @verify_token
-    @doc(description='Requseting stk push request ', tags=["Mpesa stk push"])
+    @doc(description='Requesting stk push request ', tags=["Mpesa stk push"])
     @use_kwargs(TransactionstkPutSchema, location=('json'))
     def post(self, **kwargs):
         try:
-            phone = kwargs.get('Username', 'default')
-            amount = kwargs.get('Password', 'default')
+            phone = kwargs.get('phone', 'default')
+            amount = kwargs.get('amount', 'default')
+            orderno = kwargs.get('orderno', 'default')
+            print(phone)
+            print(amount)
+            print(orderno)
             if str(phone) == "" or str(amount) == "":
                 return {'message': 'invalid amount or phone number'}, 200
             else:
-                if amount.isdigit() and amount.isdigit():
+                if amount.isdigit() and phone.isdigit():
                     jsndata = {'phone': phone, 'amount': amount}
-                    url = 'http://testrms.mabnets.com/c2b/c2bconfirm.php?tok=Rms!2021'
+                    url = 'https://payments.ekarantechnologies.com/Pushforjiandike'
                     myjson = jsndata
 
-                    x = requests.post(url, json=myjson)
-                    print(x.text)
-                    return {'message': 'APi iko fine'}, 200
+                    returnmsg = requests.post(url, json=myjson)
+                    print(returnmsg)
+                    return {'message': returnmsg}, 200
                 else:
                     return {'message': 'invalid amount or phone number'}, 200
 
