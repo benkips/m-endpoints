@@ -1,4 +1,4 @@
-import requests
+import ast
 
 try:
     from flask import app, Flask, request
@@ -12,6 +12,7 @@ try:
     from enum import Enum
     from functools import wraps
     import jwt
+    import requests
 
     print("All Modules are loaded ...")
 except Exception as e:
@@ -62,13 +63,14 @@ class TransactionstkController(MethodResource, Resource):
                 return {'message': 'invalid amount or phone number'}, 200
             else:
                 if amount.isdigit() and phone.isdigit():
-                    jsndata = {'phone': phone, 'amount': amount}
+                    jsndata = {'phone': phone, 'amount': amount,'ordernumber':orderno}
                     url = 'https://payments.ekarantechnologies.com/Pushforjiandike'
                     myjson = jsndata
 
                     returnmsg = requests.post(url, json=myjson)
-                    print(returnmsg)
-                    return {'message': returnmsg}, 200
+                    print(returnmsg.text)
+                    returnmsga=ast.literal_eval(returnmsg.text)
+                    return {'message': returnmsga.get('suc')}, 200
                 else:
                     return {'message': 'invalid amount or phone number'}, 200
 

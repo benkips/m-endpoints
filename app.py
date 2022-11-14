@@ -1,5 +1,3 @@
-
-
 try:
     from flask import app,Flask
     from flask_restful import Resource, Api
