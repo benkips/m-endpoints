@@ -12,6 +12,7 @@ try:
     from MyRestApi.ClusterHealth.views import HeathController
     from MyRestApi.Authorization.views import AuthorizationController
     from MyRestApi.StkPush.views import TransactionstkController
+    from MyRestApi.Transactions.views import TransactionController
 
 except Exception as e:
     print("__init Modules are Missing {}".format(e))
@@ -20,7 +21,7 @@ app = Flask(__name__)  # Flask app instance initiated
 api = Api(app)  # Flask restful wraps Flask app around it.
 app.config.update({
     'APISPEC_SPEC': APISpec(
-        title='Mpesa Project',
+        title='Mpesa-Ekarantechnologies Endpoint',
         version='v1',
         plugins=[MarshmallowPlugin()],
         openapi_version='2.0.0'
@@ -44,10 +45,13 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(minutes=60)
 
 api.add_resource(HeathController, '/health_check')
 docs.register(HeathController)
-api.add_resource(AuthorizationController, '/Authorize')
+api.add_resource(AuthorizationController, '/authorize')
 docs.register(AuthorizationController)
 api.add_resource(TransactionstkController, '/stk')
 docs.register(TransactionstkController)
+api.add_resource(TransactionController, '/ordertransaction')
+docs.register(TransactionController)
+
 
 if __name__ == "__main__":
     app.run()

@@ -10,7 +10,7 @@ try:
     from functools import wraps
     import jwt
 
-    print("All imports are ok............")
+    print("All imports are ok ClusterHealth............")
 except Exception as e:
     print("Error: {} ".format(e))
 

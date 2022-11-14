@@ -11,7 +11,7 @@ try:
     import datetime
     import jwt
 
-    print("All imports are ok............")
+    print("All imports are ok for Authorization............")
 except Exception as e:
     print("Error: {} ".format(e))
 
@@ -28,7 +28,7 @@ SECRET_KEY = '8ee2923d3cd2b2833d3b747173f6c0da'
 
 class AuthorizationController(MethodResource, Resource):
 
-    @doc(description='Basic Auth  ', tags=["Authorization"])
+    @doc(description='JWT authorization ', tags=["Authorization"])
     @use_kwargs(AuthorizationPutSchema, location='json')
     def post(self, **kwargs):
         json_data = request.get_json(force=True)

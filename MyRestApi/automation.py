@@ -13,17 +13,17 @@ class Parameters(object):
     def __init__(self):
         self.data = {
 
-            "ApiName": "StkPush",
-            "tag": "Get mpesa transactions",
-            "ApiDescription": "Mpesa transactions",
+            "ApiName": "Transaction",
+            "tag": "Get mpesa transaction from ordernumber",
+            "ApiDescription": "Transaction from ordernumber",
             "DataBaseRequired": False,
             "python_library": ["import os", "from enum import Enum", ],
             "field": [
                 {
-                    "name": "phone",
+                    "name": "orderno",
                     "type": "String",
                     "required": True,
-                    "description": "mobile number",
+                    "description": "ordernumber from the order",
                 },
 
             ],

@@ -1,3 +1,5 @@
+
+
 try:
     from flask import app, Flask, request
     from flask_restful import Resource, Api, reqparse
@@ -8,25 +10,15 @@ try:
     from flask_apispec import marshal_with, doc, use_kwargs
     import os
     from enum import Enum
-    from functools import wraps
     import jwt
     import requests
     import ast
-    from forex_python.converter import CurrencyRates
-
-
-    print("All  imports are ok for Stkpush ...")
+    from functools import wraps
+    print("All Modules are loaded ...")
 except Exception as e:
     print("some modules are Missing ")
 
 SECRET_KEY = '8ee2923d3cd2b2833d3b747173f6c0da'
-
-
-class TransactionstkPutSchema(Schema):
-    phone = fields.String(required=True, description="mobile number")
-    amount = fields.String(required=True, description="amount")
-    orderno = fields.String(required=True, description="ordernumber")
-
 
 def verify_token(f):
     @wraps(f)
@@ -46,36 +38,39 @@ def verify_token(f):
 
     return decorator
 
+class TransactionPutSchema(Schema):
+    mpesacode = fields.String(required=True, description="mpesacode from the order")
 
-class TransactionstkController(MethodResource, Resource):
+
+
+
+
+class TransactionController(MethodResource, Resource):
 
     @verify_token
-    @doc(description='Requesting stk push request ', tags=["Mpesa stk push"])
-    @use_kwargs(TransactionstkPutSchema, location=('json'))
+    @doc(description='Add Documentation ', tags=["Get mpesa transaction from mpesacode"])
+    @use_kwargs(TransactionPutSchema, location=('json'))
     def post(self, **kwargs):
         try:
-            phone = kwargs.get('phone', 'default')
-            amount = kwargs.get('amount', 'default')
-            orderno = kwargs.get('orderno', 'default')
+            mpesacode = kwargs.get('mpesacode', 'default')
 
-            if str(phone) == "" or str(amount) == "":
+            if str(mpesacode) == 10 :
                 return {'message': 'invalid amount or phone number'}, 200
             else:
-                if amount.isdigit() and phone.isdigit():
-                    converter=121
-                    amounta=int(converter) * int(amount)
-                    jsndata = {'phone': phone, 'amount': amounta,'ordernumber':orderno}
-                    url = 'https://payments.ekarantechnologies.com/Pushforjiandike'
+                if len(mpesacode)==10:
+                    jsndata = {'mpesacode': str(mpesacode)}
+                    url = 'https://payments.ekarantechnologies.com/Getransaction'
                     myjson = jsndata
 
                     returnmsg = requests.post(url, json=myjson)
                     print(returnmsg.text)
-                    returnmsga=ast.literal_eval(returnmsg.text)
-                    return {'message': returnmsga.get('suc')}, 200
+                    returnmsga = ast.literal_eval(returnmsg.text)
+                    if returnmsg.text.__contains__('fail'):
+                        return {'message': returnmsga.get('fail')}, 200
+                    else:
+                        return {'message': returnmsga.get('data')}, 200
                 else:
-                    return {'message': 'invalid amount or phone number'}, 200
-
-
+                    return {'message': 'invalid mpesacode'}, 200
         except Exception as e:
             print(e)
             return {
@@ -84,3 +79,4 @@ class TransactionstkController(MethodResource, Resource):
                     "message": str(e)
                 }
             }
+
